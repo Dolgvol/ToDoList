@@ -1,0 +1,249 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.header {
+  height: 70px;
+  width: 100%;
+
+  .container {
+    height: 100%;
+
+    .row {
+      height: 100%;
+
+      .linkList {
+        font-weight: 600;
+      }
+    }
+  }
+}
+
+
+.main {
+
+  .CreateCategory {
+    height: 100px;
+
+    .NameInput {
+      flex: 0 1 70%;
+    }
+
+    .ColorInput {  
+      input {
+        width: 60px;
+        height: 40px;
+      }
+    }
+  }
+
+  .NoteGroups {
+    margin-bottom: 60px;
+
+    .NoteGroup {
+      margin-bottom: 20px;
+
+      svg {
+        cursor: pointer;
+      }
+  
+      .GroupHead {
+        user-select: none; 
+  
+        .categoryInfo {
+          display: flex;
+          align-items: center;
+          justify-content: start;
+          min-height: 50px;
+          max-height: max-content;
+          padding: 0 15px 0 15px;
+          font-weight: 600;   
+          font-size: 1.2rem;
+          border-bottom: 1px solid #ccc;
+  
+          .categoryName {
+            flex: 1 1 30%;
+          }
+  
+          .categoryCountManag {
+            flex: 0 0 100px;   
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;       
+          }
+  
+          .categoryPosition {
+            flex: 0 0 100px;  
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: start;       
+          }
+  
+          svg:hover {
+            color: #333;
+          }
+        }
+  
+        .bodyTitle {
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: start;
+          min-height: 30px;
+          max-height: max-content;
+          margin: 0 0 5px 0;
+          padding: 0 10px 0 15px;
+          font-weight: 600;   
+          font-size: 1.1rem;
+          overflow: hidden;
+          text-overflow: ellipsis;  
+  
+          .nameTitle {
+            flex: 1 1 30%;
+          }
+          .createdTitle {
+            flex: 0 1 15%;    
+          }
+          .endpointTitle {
+            flex: 0 1 15%;      
+          }
+          .statusTitle {
+            flex: 0 0 120px;
+            padding-left: 10px;
+          }
+          .iconsTitle {
+            flex: 0 0 80px; 
+            display: flex;
+            align-items: center;
+            justify-content: end;   
+  
+            svg {
+              transition: all ease-in 0.1s;  
+            }
+                
+          }
+        }
+      }
+  
+      .GroupBody {
+  
+        .Note {
+          display: flex;
+          align-items: center;
+          justify-content: start;
+          min-height: 50px;
+          max-height: max-content;
+          margin: 0 0 5px 0;
+          padding: 0 15px 0 15px;
+  
+          .itemCell {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+  
+          .itemName {
+            flex: 1 1 30%;
+            font-weight: 600;
+          }
+  
+          .itemCreated {
+            flex: 0 1 15%;
+          }
+  
+          .itemEndpoint {
+            flex: 0 1 15%;
+            font-weight: 600;
+          }
+  
+          .itemStatusManagment {
+            flex: 0 0 120px;
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+          }
+  
+          .itemManagment {
+            flex: 0 0 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+  
+            svg:hover {
+              color: #333;
+            }
+          }
+        }
+      }
+    }
+  }
+
+
+
+
+
+
+  .ModalWrapper {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 10;
+    background-color: #55555573;
+
+    .modalWindow {
+      display: flex;
+      flex-direction: column;
+      justify-content: start;
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      min-height: 500px;
+      max-height: max-content;
+      width: 50%;
+      z-index: 20;
+      background-color: #ffffff;
+      padding: 20px 30px;
+      word-wrap: break-word;
+
+      .closeBtnBlock {
+        display: flex;
+        align-items: center;
+        justify-content: end;
+        min-height: 30px;
+        flex: 0 1 30px;
+      } 
+
+      .modalContent {
+        flex: 1 1 80%;
+        display: flex;
+        justify-content: center;
+        
+        .editForm {
+          flex: 0 1 70%;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+        }
+      }
+    }
+  }
+ 
+
+ 
+
+
+}
