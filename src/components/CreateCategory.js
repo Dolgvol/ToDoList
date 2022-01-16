@@ -1,14 +1,26 @@
 import React, {useState, useEffect} from 'react';
 
 // название должно быть и не должно совпадать с текущими
-export const CreateCategory = ({}) => {
-   const [category, setCategory] = useState('')
+export const CreateCategory = ({ cats, createCat, editCat, catName='' }) => {
+   const [name, setName] = useState(catName)
    const [color, setColor] = useState('#0d6efd')
 
+   const [currCat, setCurrCat] = useState()
+
+   const [alert1, setAlert1] = useState(false)
+
+   useEffect(() => {      
+      setCurrCat(cats.find(cat => cat.name === name))
+   }, [cats, name])
+
+
+
+
    return (
-      <>
-         <div className="CreateCategory bg-light d-flex justify-content-between align-items-center mt-3">
+      <div className="CreateCategoryWrapp bg-light">
+         <div className="CreateCategory d-flex justify-content-between align-items-center mt-3">
             <div className="col-9 d-flex justify-content-start align-items-center">
+
                <div className="NameInput d-flex align-items-center mx-2">
                   <strong className="text-success mx-3">
                      Name
@@ -16,12 +28,13 @@ export const CreateCategory = ({}) => {
                   <input 
                      type="text" 
                      className="form-control"
-                     value={category}  
+                     value={name}  
                      onChange={(e) => {
-                        setCategory(e.target.value)
+                        setName(e.target.value)
                      }}
                   />
                </div>
+
                <div className="ColorInput d-flex align-items-center mx-2">
                   <strong className="text-success mx-3">
                      Color
@@ -47,17 +60,32 @@ export const CreateCategory = ({}) => {
                   </datalist>
                </div>
             </div>
+
+
             <div className="col-3 d-flex justify-content-end">
                <button 
                   className="btn btn-success"
-                  onClick={(e) => {
-
+                  onClick={() => {
+                     if (name.length < 3) {
+                        setAlert1(true)
+                     } else if (currCat) {
+                        setAlert1(false)
+                        editCat(currCat.id , {color, name})
+                        
+                     } else {
+                        setAlert1(false)
+                        createCat({color, name})
+                     }                 
                   }}
                >
                   Create Category
                </button>
             </div>            
          </div>
-      </>
+         <div className="AlertBlock">
+               { alert1 && <span>Name must be longer than two letters</span> } 
+               { currCat && <span>Category will be changed</span> } 
+         </div>
+      </div>
    );
 }

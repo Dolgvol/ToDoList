@@ -1,18 +1,24 @@
+import React, { useState } from 'react';
 import { Modal } from "./Modal";
-import React, {useState, useEffect} from 'react';
 
 
-export const ModalEditNote = ({  btn, categoryInit='', 
-                                 statusInit='recent', nameInit='', 
-                                 endpointInit='' }) => {
+export const ModalEditNote = ({  btn, 
+                                 note,
+                                 createNote,
+                                 editNote,
+                                 cats=[]                              
+                              }) => {
+                                 
+   const [categoryId, setCategoryId] = useState(note?.categoryId || cats[0]?.id);
+   const [status, setStatus] = useState(note?.status || 'added');
+   const [name, setName] = useState(note?.name || '');
+   const [endpoint, setEndpoint] = useState(note?.endpoint || '');
 
-   const [category, setCategory] = useState(categoryInit)
-   const [status, setStatus] = useState(statusInit)
-   const [name, setName] = useState(nameInit)
-   const [endpoint, setEndpoint] = useState(endpointInit)
+   const [open, setOpen] = useState(false);
+
 
    return (
-      <Modal btn={btn}>
+      <Modal btn={btn} open={open} setOpen={setOpen}>
          <form 
             name="editForm" 
             className="editForm"
@@ -22,23 +28,18 @@ export const ModalEditNote = ({  btn, categoryInit='',
          >
             <div className="mb-4">
                <label className="form-label">Category</label>
+
                <select 
                   className="form-select"
-                  value={category}  
+                  value={categoryId}  
                   onChange={(e) => {
-                     setCategory(e.target.value)
+                     setCategoryId(e.target.value)
                   }}
                >
-                  <option value="Work">Work</option>
-                  <option value="Home">Home</option>
-                  <option value="Hobby">Hobby</option>
+                  { cats.map(cat => (
+                     <option key={cat.id} value={cat.id}>{cat.name}</option>)) 
+                  }
                </select>
-
-               {/* const MySelect = ({options=countries, value='ZW', onChange}) => (
-               <select defaultValue={value} onChange={(e) => onChange(e.target.value)}>
-                  {Object.entries(options).map(([key, cont]) => <option value={key}>{key}: {cont}</option> )}
-               </select>
-                  ) */}
             </div>
 
             <div className="mb-4">
@@ -73,18 +74,23 @@ export const ModalEditNote = ({  btn, categoryInit='',
                <input 
                   type="date" 
                   className="form-control" 
-                  value={endpoint}  
+                  value={endpoint.split('.').reverse().join('-')}  
                   onChange={(e) => {
-                     setEndpoint(e.target.value)
+                     setEndpoint(e.target.value.split('-').reverse().join('.'))
                   }}
                />
             </div>
 
             <div className="submitBlock mt-auto mb-2 d-flex justify-content-center">
                <button 
+                  type="button"
                   className="submitBtn btn btn-success"
-                  onClick={(e) => {
-                     
+                  onClick={() => {
+                     (createNote ?
+                        createNote({ categoryId: Number(categoryId), status, name, endpoint }) :
+                           editNote(note.id, { categoryId: Number(categoryId), status, name, endpoint})
+                     );
+                     setOpen(false);                  
                   }} 
                   >
                   Submit

@@ -32,20 +32,29 @@ code {
 
 .main {
 
-  .CreateCategory {
-    height: 100px;
-
-    .NameInput {
-      flex: 0 1 70%;
+  .CreateCategoryWrapp {
+    .CreateCategory {
+      height: 100px;
+      padding-right: 15px;
+  
+        .NameInput {
+          flex: 0 1 70%;
+        }
+  
+        .ColorInput {  
+          input {
+            width: 60px;
+            height: 40px;
+          }
+        }    
     }
-
-    .ColorInput {  
-      input {
-        width: 60px;
-        height: 40px;
-      }
+  
+    .AlertBlock {
+      height: 25px;
+      color: #f00;
     }
   }
+
 
   .NoteGroups {
     margin-bottom: 60px;
@@ -76,7 +85,7 @@ code {
           }
   
           .categoryCountManag {
-            flex: 0 0 100px;   
+            flex: 0 0 200px;   
             display: flex;
             align-items: center;
             justify-content: space-evenly;       
@@ -148,7 +157,7 @@ code {
           padding: 0 15px 0 15px;
   
           .itemCell {
-            white-space: nowrap;
+            word-wrap: break-word;
             overflow: hidden;
             text-overflow: ellipsis;
           }
@@ -156,6 +165,8 @@ code {
           .itemName {
             flex: 1 1 30%;
             font-weight: 600;
+            max-width: calc(70% - 200px);
+
           }
   
           .itemCreated {
@@ -237,6 +248,8 @@ code {
           display: flex;
           flex-direction: column;
           justify-content: space-between;
+          font-size: 1rem;
+          font-weight: 400;
         }
       }
     }

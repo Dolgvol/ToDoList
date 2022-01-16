@@ -1,22 +1,30 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faAngleUp, faAngleDown, faPlusSquare, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faAngleUp, faAngleDown, faPlusSquare, faPen, faTrash } from '@fortawesome/free-solid-svg-icons'
 
-import {Note} from './Note';
+import { Note } from './Note';
+import { ModalEditNote } from '../components/ModalEditNote';
 
 
 
-const GroupBody = ({notes=[], ...rest}) => ( 
-
+const GroupBody = ({notes=[], ...rest}) => (
    <div className="GroupBody">
       {notes.map((note) => <Note key={note.id} note={note} {...rest} />)}      
    </div>
  )
 
+ const CreateInCat = () => (
+   <FontAwesomeIcon 
+      icon={faPlusSquare} size="lg" color={'#555'}
+   />
+ )
 
-
-export const NoteGroup = ({open=true, cat, notes, ...rest}) => {
+export const NoteGroup = ({
+                            open=true, cat, notes,
+                            createNote, deleteCat, 
+                            deleteGroupNotes, ...rest }) => {
    const [isOpen, setOpen] = useState(open)
+
 
    return (
       <div className="NoteGroup">
@@ -30,13 +38,27 @@ export const NoteGroup = ({open=true, cat, notes, ...rest}) => {
                   {cat.name}
                </div>
                <div className="categoryCountManag">
+
+                  <ModalEditNote 
+                     btn={CreateInCat()} 
+                     createNote={createNote}
+                     cats={[cat]} />       
+
                   <FontAwesomeIcon 
-                     icon={faPlusSquare} size="lg" color={'#555'}
-                     
-                  />
+                     onClick={() => {}}
+                     icon={faPen} size="lg" color={'#555'}  
+                     onClick={() => {
+
+                        window.scrollTo(0, 0);
+                     }}                
+                  /> 
+
                   <FontAwesomeIcon 
                      icon={faTrash} size="lg" color={'#555'}
-
+                     onClick={() => {
+                        deleteCat(cat.id);
+                        deleteGroupNotes(cat.id)
+                     }}
                   />
                </div>
             </div>

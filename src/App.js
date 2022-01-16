@@ -1,92 +1,70 @@
 import React, {useState, useEffect} from 'react';
 import './App.scss';
 import { Header } from './containers/Header';
-
-import { ModalEditNote } from './components/ModalEditNote';
-import { CreateCategory } from './components/CreateCategory';
-import { NoteGroups } from './components/NoteGroups'
-
-import { storeController, createInitialCats, createInitialNotes } from './storage'
-import {makeNote} from '../helpers/makeItem';
-import {makeCat} from '../helpers/makeCat';
+import { MainGraphs } from './containers/MainGraphs';
+import { MainTasks } from './containers/MainTasks';
 
 
-const Btn = () => (
-  <button 
-     className="btn btn-primary"         
-     >
-     Create Note
-  </button>
-)
-
-export const MainTasks = (props) => (
-  <main className="main">
-    <div className="container">
-
-      <CreateCategory />
-
-      <div className="CreateNote d-flex justify-content-end mt-3">
-        <ModalEditNote btn={Btn()} />
-      </div>
+import { createInitialCats, createInitialNotes } from './storage/init'
+import { storeController } from './storage'
+import { makeNote } from './helpers/makeItem';
+import { makeCat } from './helpers/makeCat';
 
 
-      <NoteGroups {...props} />
-
-    </div>   
-</main>
-)
-
-export const MainGraphs = () => (
-  <>
-  <div className="container">
-    ZALUPA
-  </div>
-  </>
-)
-
-const initialCats = createInitialCats()
-const initialNotes = createInitialNotes()
+const initialCats = createInitialCats();
+const initialNotes = createInitialNotes();
 
 function App() {  
-  const [route, setRoute] = useState(window.location.hash.split('/').slice(-1)[0]);
+  const [route, setRoute] = useState();
   window.onhashchange = () => { 
     const currHash = window.location.hash.split('/').slice(-1)[0];
     setRoute(currHash); 
     // console.log(route)
     // console.log(currHash)
   }
+  useEffect(() => {      
+    setRoute(window.location.hash.split('/').slice(-1)[0]);
+  })
 
-
-  const [cats, setCats] = useState(initialCats)
-  const [notes, setNotes] = useState(initialNotes)
+  const [cats, setCats] = useState(initialCats);
+  const [notes, setNotes] = useState(initialNotes);
   const [currFilter, setCurrFilter] = useState({
                                                   added: true,
                                                   inProgress: true,
-                                                  done: false
-                                              })
+                                                  done: true
+                                              });
 
   function getSelectedNotes() {
     if (notes) {
-      let selectedItems = []
+      let selectedItems = [];
       if (currFilter.added) {
             selectedItems.push(...notes.filter((note) => 
-              note.status === 'added'))
+              note.status === 'added'));
       }
       if (currFilter.inProgress) {
           selectedItems.push(...notes.filter((note) => 
-            note.status === 'inProgress'))
+            note.status === 'inProgress'));
       }
       if (currFilter.done) {
         selectedItems.push(...notes.filter((note) => 
-          note.status === 'done'))
+          note.status === 'done'));
       }
-      return selectedItems
+      return selectedItems.sort((a, b) => {
+        if (a.id > b.id) {
+          return 1
+        }
+        if (a.id < b.id) {
+          return -1
+        }
+        return 0
+      });
     }
   }
 
-  const notesControll = notesController(notes, setNotes)
+  const catsControll = storeController(cats, setCats, makeCat);
+  const notesControll = storeController(notes, setNotes, makeNote);
 
-  console.log(cats, notes)
+  console.log(cats, notes);
 
 
   // function localStorageController(state, setState, localStorageName) {
@@ -97,15 +75,15 @@ function App() {
   //   }
   // }
   // localStorageController(cats, setCats, 'cats')
-  // localStorageController(notes, setNotes, 'notes')
-    
-
+  // localStorageController(notes, setNotes, 'notes')  
 
   switch (route) {    
     case 'graphs':
       return (
         <div className="App">      
-          <Header filter={currFilter} selectNotes={setCurrFilter} />      
+          <Header 
+            filter={currFilter} 
+            selectNotes={setCurrFilter} />      
           <MainGraphs />      
         </div>
       );
@@ -113,14 +91,49 @@ function App() {
     default:
       return (
         <div className="App">      
-          <Header filter={currFilter} selectNotes={setCurrFilter} />      
-          <MainTasks notes={getSelectedNotes()} cats={cats} 
-            createItem={notesControll.createItem}
-            editItem={notesControll.editItem}
-            deleteItem={notesControll.deleteItem} />      
+          <Header 
+            filter={currFilter} 
+            selectNotes={setCurrFilter} />      
+          <MainTasks  
+            cats={cats}
+            createCat={catsControll.createItem}
+            editCat={catsControll.editItem}
+            deleteCat={catsControll.deleteItem}
+
+            notes={getSelectedNotes()} 
+            createNote={notesControll.createItem}
+            editNote={notesControll.editItem}
+            deleteNote={notesControll.deleteItem}
+            deleteGroupNotes={notesControll.deleteGroupNotes} />      
         </div>
       );
   }  
+
+
+  // return (
+  //   <div className="App">      
+  //     <Header 
+  //       filter={currFilter} 
+  //       selectNotes={setCurrFilter} />
+  //       {console.log(route)}
+  //       { route === 'graphs' ? 
+  //           <MainGraphs /> :
+  //             <MainTasks  
+  //             cats={cats}
+  //             createCat={catsControll.createItem}
+  //             editCat={catsControll.editItem}
+  //             deleteCat={catsControll.deleteItem}
+      
+  //             notes={getSelectedNotes()} 
+  //             createNote={notesControll.createItem}
+  //             editNote={notesControll.editItem}
+  //             deleteNote={notesControll.deleteItem}
+  //             deleteGroupNotes={notesControll.deleteGroupNotes} />   
+  //       }   
+  //   </div>
+  // );
+
+
 }
 
 export default App;
