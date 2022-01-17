@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal } from "./Modal";
 
 
@@ -16,7 +16,11 @@ export const ModalEditNote = ({  btn,
 
    const [open, setOpen] = useState(false);
 
+   useEffect(() => {      
+      setCategoryId(note?.categoryId || cats[0]?.id)
+   }, [open]);
 
+        console.log(cats)                         
    return (
       <Modal btn={btn} open={open} setOpen={setOpen}>
          <form 
@@ -83,6 +87,7 @@ export const ModalEditNote = ({  btn,
 
             <div className="submitBlock mt-auto mb-2 d-flex justify-content-center">
                <button 
+                  disabled={cats[0] ? false : true}
                   type="button"
                   className="submitBtn btn btn-success"
                   onClick={() => {
