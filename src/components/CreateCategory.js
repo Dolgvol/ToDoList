@@ -1,19 +1,27 @@
 import React, {useState, useEffect} from 'react';
 
 // название должно быть и не должно совпадать с текущими
-export const CreateCategory = ({ cats, createCat, editCat, catName='' }) => {
-   const [name, setName] = useState(catName)
-   const [color, setColor] = useState('#0d6efd')
+export const CreateCategory = ({ cats, createCat, editCat,
+                                 currCat, setCurrCat  }) => {
 
-   const [currCat, setCurrCat] = useState()
+   const [name, setName] = useState(currCat?.name || '')
+   const [color, setColor] = useState(currCat?.color || '#0d6efd')
 
    const [alert1, setAlert1] = useState(false)
+   const [alert2, setAlert2] = useState(false)
 
-   useEffect(() => {      
-      setCurrCat(cats.find(cat => cat.name === name))
-   }, [cats, name])
-
-
+   useEffect(() => { 
+      if (cats.find(cat => cat.id === currCat?.id)) {
+         setName(currCat?.name)
+         setColor(currCat?.color)
+      } else {
+         setName('')
+         setColor('#0d6efd')
+         setCurrCat(null)
+      }
+      setAlert1(false)
+      setAlert2(false)
+   }, [cats, currCat])
 
 
    return (
@@ -29,8 +37,14 @@ export const CreateCategory = ({ cats, createCat, editCat, catName='' }) => {
                      type="text" 
                      className="form-control"
                      value={name}  
-                     onChange={(e) => {
+                     onChange={(e) => {                        
                         setName(e.target.value)
+                        if (e.target.value.length < 3) {
+                           setAlert1(true)   
+                        }  else {
+                           setAlert1(false)
+                        } 
+                        setAlert2(false)
                      }}
                   />
                </div>
@@ -63,28 +77,50 @@ export const CreateCategory = ({ cats, createCat, editCat, catName='' }) => {
 
 
             <div className="col-3 d-flex justify-content-end">
-               <button 
-                  className="btn btn-success"
-                  onClick={() => {
-                     if (name.length < 3) {
-                        setAlert1(true)
-                     } else if (currCat) {
-                        setAlert1(false)
-                        editCat(currCat.id , {color, name})
-                        
-                     } else {
-                        setAlert1(false)
-                        createCat({color, name})
-                     }                 
-                  }}
-               >
-                  Create Category
-               </button>
+
+               { currCat ?
+                     <>
+                        <button 
+                           className="btn btn-success"
+                           onClick={() => {
+                              if (name.length > 2) {
+                                 editCat(currCat.id , {color, name})
+                                 setCurrCat(null)
+                              }         
+                           }}
+                        >
+                           Edit Category
+                        </button>
+                        <button 
+                           className="btn btn-danger"
+                           onClick={() => {
+                              setCurrCat(null)
+                           }}
+                        >
+                           Cancel
+                        </button>
+                     </>                  
+                  :                   
+                     <button 
+                        className="btn btn-success"
+                        onClick={() => {
+                           if (cats.find(cat => cat.name === name)) {
+                              setAlert2(true)
+                           } else if (name.length > 2) {
+                              setAlert2(false)
+                              createCat({color, name})
+                           }             
+                        }}
+                     >
+                        Create Category
+                     </button>
+               }
+
             </div>            
          </div>
          <div className="AlertBlock">
                { alert1 && <span>Name must be longer than two letters</span> } 
-               { currCat && <span>Category will be changed</span> } 
+               { alert2 && <span>This name already exist</span> } 
          </div>
       </div>
    );

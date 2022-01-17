@@ -1,57 +1,64 @@
-import {makeNote} from '../helpers/makeItem';
-import {makeCat} from '../helpers/makeCat';
+import {makeNote} from '../actions/makeItem';
+import {makeCat} from '../actions/makeCat';
 
 
 const initialNotes = [
    {
-      status: 'added',
+      status: 'done',
       categoryId: 1,
-      created : '20.12.2021',
+      created : '1.12.2021',
       name: 'Go To Work',
-      endpoint: ''
+      endpoint: '',
+      doneDate: '5.12.2021'
    },
    {
-      status: 'inProgress',
+      status: 'done',
       categoryId: 2,
-      created : '21.12.2021',
+      created : '3.12.2021',
       name: 'Visit dentist',
-      endpoint: '21.12.2022'
+      endpoint: '03.12.2022',
+      doneDate: '7.12.2021'
    },
    {
-      status: 'added',
+      status: 'done',
       categoryId: 3,
-      created : '19.12.2021',
+      created : '5.12.2021',
       name: 'Buy bluetooth adapter',
-      endpoint: ''
+      endpoint: '',
+      doneDate: '10.12.2021'
    },
    {
       status: 'done',
       categoryId: 1,
-      created : '18.12.2021',
+      created : '10.12.2021',
       name: 'Fix app problem',
-      endpoint: ''
+      endpoint: '',
+      doneDate: '15.12.2021'
    },
 
    {
-      status: 'inProgress',
+      status: 'done',
       categoryId: 2,
-      created : '01.12.2021',
+      created : '22.12.2021',
       name: 'Write shopping list',
-      endpoint: ''
+      endpoint: '',
+      doneDate: '25.12.2021'
    },
    {
       status: 'done',
       categoryId: 3,
-      created : '05.12.2021',
+      created : '24.12.2021',
       name: 'Read book',
-      endpoint: '30.12.2021'
+      endpoint: '24.12.2021',
+      doneDate: '31.12.2021'
    },
    {
-      status: 'inProgress',
+      status: 'done',
       categoryId: 1,
-      created : '03.12.2021',
+      created : '27.12.2021',
       name: 'Implement new features',
-      endpoint: '03.12.2022'
+      endpoint: '27.12.2022',
+      doneDate: '30.12.2021'
    },
 ];
 

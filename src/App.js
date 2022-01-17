@@ -5,77 +5,49 @@ import { MainGraphs } from './containers/MainGraphs';
 import { MainTasks } from './containers/MainTasks';
 
 
-import { createInitialCats, createInitialNotes } from './storage/init'
-import { storeController } from './storage'
-import { makeNote } from './helpers/makeItem';
-import { makeCat } from './helpers/makeCat';
+import { createInitialCats, createInitialNotes } from './storage/init';
+
+import { getSelectedNotes } from './actions/getSelectedNotes';
+import { storeController } from './actions/storeController';
+import { rebuildNotesByCats } from './actions/rebuildNotes';
+import { rebuildNotesByDates } from './actions/rebuildNotes';
+import { makeNote } from './actions/makeItem';
+import { makeCat } from './actions/makeCat';
+import { storageGet, storageSet } from './actions/localStorageActions'
 
 
 const initialCats = createInitialCats();
 const initialNotes = createInitialNotes();
+const initialFilter = {
+  added: true,
+  inProgress: true,
+  done: true
+}
+
 
 function App() {  
   const [route, setRoute] = useState();
   window.onhashchange = () => { 
     const currHash = window.location.hash.split('/').slice(-1)[0];
     setRoute(currHash); 
-    // console.log(route)
-    // console.log(currHash)
   }
   useEffect(() => {      
     setRoute(window.location.hash.split('/').slice(-1)[0]);
-  })
+  });
 
-  const [cats, setCats] = useState(initialCats);
-  const [notes, setNotes] = useState(initialNotes);
-  const [currFilter, setCurrFilter] = useState({
-                                                  added: true,
-                                                  inProgress: true,
-                                                  done: true
-                                              });
+  const [cats, setCats] = useState( storageGet('cats') || initialCats);
+  const [notes, setNotes] = useState( storageGet('notes') || initialNotes);
+  const [currFilter, setCurrFilter] = useState( storageGet('currFilter') || initialFilter);
 
-  function getSelectedNotes() {
-    if (notes) {
-      let selectedItems = [];
-      if (currFilter.added) {
-            selectedItems.push(...notes.filter((note) => 
-              note.status === 'added'));
-      }
-      if (currFilter.inProgress) {
-          selectedItems.push(...notes.filter((note) => 
-            note.status === 'inProgress'));
-      }
-      if (currFilter.done) {
-        selectedItems.push(...notes.filter((note) => 
-          note.status === 'done'));
-      }
-      return selectedItems.sort((a, b) => {
-        if (a.id > b.id) {
-          return 1
-        }
-        if (a.id < b.id) {
-          return -1
-        }
-        return 0
-      });
-    }
-  }
 
   const catsControll = storeController(cats, setCats, makeCat);
   const notesControll = storeController(notes, setNotes, makeNote);
 
   console.log(cats, notes);
 
-
-  // function localStorageController(state, setState, localStorageName) {
-  //   if (!state && localStorage[localStorageName]) {
-  //       setState(JSON.parse(localStorage[localStorageName])) 
-  //   } else if (state) {
-  //       localStorage.setItem(localStorageName, JSON.stringify(state))
-  //   }
-  // }
-  // localStorageController(cats, setCats, 'cats')
-  // localStorageController(notes, setNotes, 'notes')  
+  storageSet('cats', cats);
+  storageSet('notes', notes);
+  storageSet('currFilter', currFilter);
 
   switch (route) {    
     case 'graphs':
@@ -83,8 +55,12 @@ function App() {
         <div className="App">      
           <Header 
             filter={currFilter} 
-            selectNotes={setCurrFilter} />      
-          <MainGraphs />      
+            selectNotes={setCurrFilter} 
+          />      
+          <MainGraphs 
+            notesByCats={rebuildNotesByCats(notes, cats)} 
+            notesByDates={rebuildNotesByDates(notes)}
+          />      
         </div>
       );
     case 'main':
@@ -93,47 +69,23 @@ function App() {
         <div className="App">      
           <Header 
             filter={currFilter} 
-            selectNotes={setCurrFilter} />      
+            selectNotes={setCurrFilter} 
+          />      
           <MainTasks  
             cats={cats}
             createCat={catsControll.createItem}
             editCat={catsControll.editItem}
             deleteCat={catsControll.deleteItem}
 
-            notes={getSelectedNotes()} 
+            notes={getSelectedNotes(notes, currFilter)} 
             createNote={notesControll.createItem}
             editNote={notesControll.editItem}
             deleteNote={notesControll.deleteItem}
-            deleteGroupNotes={notesControll.deleteGroupNotes} />      
+            deleteGroupNotes={notesControll.deleteGroupNotes} 
+          />      
         </div>
       );
-  }  
-
-
-  // return (
-  //   <div className="App">      
-  //     <Header 
-  //       filter={currFilter} 
-  //       selectNotes={setCurrFilter} />
-  //       {console.log(route)}
-  //       { route === 'graphs' ? 
-  //           <MainGraphs /> :
-  //             <MainTasks  
-  //             cats={cats}
-  //             createCat={catsControll.createItem}
-  //             editCat={catsControll.editItem}
-  //             deleteCat={catsControll.deleteItem}
-      
-  //             notes={getSelectedNotes()} 
-  //             createNote={notesControll.createItem}
-  //             editNote={notesControll.editItem}
-  //             deleteNote={notesControll.deleteItem}
-  //             deleteGroupNotes={notesControll.deleteGroupNotes} />   
-  //       }   
-  //   </div>
-  // );
-
-
+  }
 }
 
 export default App;

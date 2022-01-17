@@ -22,7 +22,8 @@ const GroupBody = ({notes=[], ...rest}) => (
 export const NoteGroup = ({
                             open=true, cat, notes,
                             createNote, deleteCat, 
-                            deleteGroupNotes, ...rest }) => {
+                            deleteGroupNotes, setCurrCat,
+                            ...rest }) => {
    const [isOpen, setOpen] = useState(open)
 
 
@@ -48,7 +49,7 @@ export const NoteGroup = ({
                      onClick={() => {}}
                      icon={faPen} size="lg" color={'#555'}  
                      onClick={() => {
-
+                        setCurrCat(cat)
                         window.scrollTo(0, 0);
                      }}                
                   /> 
