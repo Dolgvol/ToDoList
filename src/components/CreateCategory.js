@@ -109,7 +109,9 @@ export const CreateCategory = ({ cats, createCat, editCat,
                            } else if (name.length > 2) {
                               setAlert2(false)
                               createCat({color, name})
-                           }             
+                           }  else {
+                              setAlert1(true)
+                           }            
                         }}
                      >
                         Create Category

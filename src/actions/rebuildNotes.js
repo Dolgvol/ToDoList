@@ -51,7 +51,7 @@ export function rebuildNotesByDates(notes) {
       return 0
    });
    
-   const start = inputNotes[0].created.split('.').reverse().join('-');
+   const start = inputNotes[0]?.created.split('.').reverse().join('-');
    // const end = inputNotes[inputNotes.length - 1].created.split('.').reverse().join('-');
 
    // получаем массив всех дат от первой заметки до сегодня в моем формате
@@ -94,7 +94,8 @@ export function rebuildNotesByDates(notes) {
 
       if (i === 0 || weekDay === 0) {
 
-         dateGap = dateList[i] + ' - ' + (dateList[i+6-weekDay] || dateList[dateList.length-1]);
+         dateGap = dateList[i] + ' - ' + (dateList[i+6-weekDay] || 
+                                                   dateList[dateList.length-1]);
          finalObj[dateGap] = [];
       } 
 

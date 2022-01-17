@@ -43,7 +43,7 @@ function App() {
   const catsControll = storeController(cats, setCats, makeCat);
   const notesControll = storeController(notes, setNotes, makeNote);
 
-  console.log(cats, notes);
+  // console.log(cats, notes);
 
   storageSet('cats', cats);
   storageSet('notes', notes);
