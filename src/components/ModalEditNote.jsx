@@ -20,7 +20,6 @@ export const ModalEditNote = ({  btn,
       setCategoryId(note?.categoryId || cats[0]?.id)
    }, [open]);
 
-        console.log(cats)                         
    return (
       <Modal btn={btn} open={open} setOpen={setOpen}>
          <form 
@@ -91,10 +90,14 @@ export const ModalEditNote = ({  btn,
                   type="button"
                   className="submitBtn btn btn-success"
                   onClick={() => {
-                     (createNote ?
-                        createNote({ categoryId: Number(categoryId), status, name, endpoint }) :
-                           editNote(note.id, { categoryId: Number(categoryId), status, name, endpoint})
-                     );
+                     if (createNote) {
+                        createNote({ categoryId: Number(categoryId), status, name, endpoint })
+                        setStatus('added')
+                        setName('')
+                        setEndpoint('')
+                     } else {
+                        editNote(note.id, { categoryId: Number(categoryId), status, name, endpoint})
+                     }         
                      setOpen(false);                  
                   }} 
                   >

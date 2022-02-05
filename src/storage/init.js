@@ -80,11 +80,11 @@ const initialCats = [
 
 export function createInitialCats() {
    return initialCats.map((itemCat) => 
-      makeCat(itemCat)
+      makeCat(itemCat, itemCat.id)
    );
 }
 export function createInitialNotes() {
    return initialNotes.map((itemNote) => 
-      makeNote(itemNote)
+      makeNote(itemNote, itemNote.id)
    );
 }

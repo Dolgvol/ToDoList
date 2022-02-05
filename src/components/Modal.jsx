@@ -1,8 +1,6 @@
 import React from 'react';
 
-export const Modal = ({children, btn, open, setOpen}) => {
-
-   return (
+export const Modal = ({children, btn, open, setOpen}) =>  (
       <>
          <span onClick={() => setOpen(true)}>
             {btn}
@@ -33,4 +31,3 @@ export const Modal = ({children, btn, open, setOpen}) => {
          </div>
       </>
    );
-}

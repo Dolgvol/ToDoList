@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleUp, faAngleDown, faPlusSquare, faPen, faTrash } from '@fortawesome/free-solid-svg-icons'
 
 import { Note } from './Note';
-import { ModalEditNote } from '../components/ModalEditNote';
+import { ModalEditNote } from './ModalEditNote';
 
 
 

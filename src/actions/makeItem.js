@@ -1,3 +1,5 @@
+import { storageGet, storageSet } from './localStorageActions'
+
 
  export function getCurrentDate(date, weekDay=false) {
    let monthDate = date.getMonth();
@@ -16,17 +18,21 @@
 }
 
 
-let nextId = 1;
+let nextItemId = storageGet('nextItemId') || 1;
+
 export function makeNote(payload, id=null) {
+
+   const currId = id ? id : nextItemId++;
+   storageSet('nextItemId', nextItemId);
    return {
-      id: id ? id : nextId++,
+      id: currId,
       status: payload.status,
       created: payload.created || getCurrentDate(new Date()),
       name: payload.name,
       endpoint: payload.endpoint,
       categoryId: payload.categoryId,
-      // желательно убрать условие до первого или, 
-      // но оно нужно для тестов и демонстрации
+      // желательно убрать условие до первого ||
+      // без него некорректно работает инит, но нельзя повторно выполнить задачу
       doneDate: payload.doneDate || ((payload.status === 'done') ? 
                   getCurrentDate(new Date()) : null)
    };

@@ -16,35 +16,33 @@ import { makeCat } from './actions/makeCat';
 import { storageGet, storageSet } from './actions/localStorageActions'
 
 
-const initialCats = createInitialCats();
-const initialNotes = createInitialNotes();
 const initialFilter = {
   added: true,
   inProgress: true,
   done: true
 }
 
-
 function App() {  
-  const [route, setRoute] = useState();
+  const [route, setRoute] = useState(window.location.hash.split('/').slice(-1)[0]);
   window.onhashchange = () => { 
     const currHash = window.location.hash.split('/').slice(-1)[0];
     setRoute(currHash); 
   }
-  useEffect(() => {      
-    setRoute(window.location.hash.split('/').slice(-1)[0]);
-  });
+  // если не всплывут баги убрать
+  // useEffect(() => {      
+  //   setRoute(window.location.hash.split('/').slice(-1)[0]);
+  // });
 
-  const [cats, setCats] = useState( storageGet('cats') || initialCats);
-  const [notes, setNotes] = useState( storageGet('notes') || initialNotes);
-  const [currFilter, setCurrFilter] = useState( storageGet('currFilter') || initialFilter);
+  const [cats, setCats] = useState( storageGet('cats') || createInitialCats() );
+  const [notes, setNotes] = useState( storageGet('notes') || createInitialNotes() );
+  const [currFilter, setCurrFilter] = useState( storageGet('currFilter') || initialFilter );
 
 
   const catsControll = storeController(cats, setCats, makeCat);
   const notesControll = storeController(notes, setNotes, makeNote);
 
   console.log(cats, notes);
-
+  
   storageSet('cats', cats);
   storageSet('notes', notes);
   storageSet('currFilter', currFilter);

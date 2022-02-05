@@ -2,7 +2,7 @@ import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faSync, faCheck, faPen, faTrash } from '@fortawesome/free-solid-svg-icons'
 
-import { ModalEditNote } from '../components/ModalEditNote';
+import { ModalEditNote } from './ModalEditNote';
 
 
 const EditNoteBtn = () => (
